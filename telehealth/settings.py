@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_filters',
     'api.v1.bookings.apps.BookingsConfig',
     'api.v1.records.apps.RecordsConfig',
     'api.v1.users.apps.UsersConfig'
