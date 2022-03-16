@@ -1,6 +1,6 @@
 from django.http import response
 from rest_framework.response import Response
-from bookings.filters import SlotFilter
+from .filters import SlotFilter
 from django.shortcuts import render
 from .models import AppointmentSlot, Booking
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView

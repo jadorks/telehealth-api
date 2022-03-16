@@ -11,9 +11,7 @@ class SlotSerializer(serializers.ModelSerializer):
 
 class BookingListSerializer(serializers.ModelSerializer):
     booking_slot = SlotSerializer(many=False, read_only=True)
-    car = CarSerializer(many=False, read_only=True)
-    user = CustomUserDetailsSerializer(many=False, read_only=True)
-
+    
     class Meta:
         model = models.Booking
         fields = '__all__'

@@ -28,7 +28,6 @@ class Booking(models.Model):
     APPROVED = 'AP'
     REJECTED = 'RJ'
     CANCELED = 'CA'
-    PROCESSING = 'PR'
     COMPLETED = 'CO'
 
     PAID = 'P'

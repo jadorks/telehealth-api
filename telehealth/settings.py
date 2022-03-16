@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'dj_rest_auth.registration',
+    'api',
     'api.v1.bookings.apps.BookingsConfig',
     'api.v1.records.apps.RecordsConfig',
     'api.v1.users.apps.UsersConfig'
@@ -132,7 +133,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'users.USER'
+AUTH_USER_MODEL = 'users.User'
 
 SITE_ID = 1
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
