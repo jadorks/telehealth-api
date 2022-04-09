@@ -16,6 +16,7 @@ class AppointmentSlot(models.Model):
     start_time = models.DateTimeField(auto_now=False, auto_now_add=False)
     end_time = models.DateTimeField(auto_now=False, auto_now_add=False)
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, default=OPEN)
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):

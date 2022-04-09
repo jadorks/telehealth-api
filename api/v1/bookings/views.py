@@ -5,8 +5,6 @@ from django.shortcuts import render
 from .models import AppointmentSlot, Booking
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from .serializers import BookingSerializer, SlotSerializer, BookingListSerializer
-from .models import Booking
-
 
 # Create your views here.
 
@@ -20,7 +18,7 @@ class BookingList(ListCreateAPIView):
         return Response(serializer.data)
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save(patient=self.request.user)
 
 class BookingDetail(RetrieveUpdateDestroyAPIView):
     queryset = Booking.objects.all()
@@ -32,8 +30,7 @@ class BookingDetail(RetrieveUpdateDestroyAPIView):
         return Response(serializer.data)
 
     def perform_update(self, serializer):
-        serializer.save(user=self.request.user)
-
+        serializer.save(patient=self.request.user)
 
 class SlotList(ListCreateAPIView):
     queryset = AppointmentSlot.objects.all()

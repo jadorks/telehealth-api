@@ -8,7 +8,6 @@ class SlotSerializer(serializers.ModelSerializer):
         model = models.AppointmentSlot
         fields = '__all__'
 
-
 class BookingListSerializer(serializers.ModelSerializer):
     booking_slot = SlotSerializer(many=False, read_only=True)
     
