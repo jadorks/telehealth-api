@@ -21,6 +21,8 @@ class PatientSerializer(serializers.ModelSerializer):
 
 class DoctorRegistrationSerializer(RegisterSerializer):
     doctor = serializers.PrimaryKeyRelatedField(read_only=True,)
+    first_name = serializers.CharField(required=True,)
+    last_name = serializers.CharField(required=True,)
     bio = serializers.CharField(required=True,)
     gender = serializers.ChoiceField(choices=User.GENDER)
     phone_number = serializers.CharField(required=True,)
@@ -28,9 +30,11 @@ class DoctorRegistrationSerializer(RegisterSerializer):
     def get_cleaned_data(self):
         data = super(DoctorRegistrationSerializer, self).get_cleaned_data()
         extra_data = {
-            'bio': self.validated_data('bio', ''),
-            'phone_number': self.validated_data('phone_number', ''),
-            'gender': self.validated_data('gender', ''),
+            'bio': self.validated_data.get('bio', ''),
+            'first_name': self.validated_data.get('first_name', ''),
+            'last_name': self.validated_data.get('last_name', ''),
+            'phone_number': self.validated_data.get('phone_number', ''),
+            'gender': self.validated_data.get('gender', ''),
         }
         data.update(extra_data)
         return data
@@ -38,6 +42,8 @@ class DoctorRegistrationSerializer(RegisterSerializer):
     def save(self, request):
         user = super(DoctorRegistrationSerializer, self).save(request)
         user.is_doctor = True
+        user.first_name = self.cleaned_data.get('first_name')
+        user.last_name = self.cleaned_data.get('last_name')
         user.phone_number = self.cleaned_data.get('phone_number')
         user.gender = self.cleaned_data.get('gender')
         user.save()
@@ -50,6 +56,8 @@ class DoctorRegistrationSerializer(RegisterSerializer):
 
 class PatientRegistrationSerializer(RegisterSerializer):
     patient = serializers.PrimaryKeyRelatedField(read_only=True,)
+    first_name = serializers.CharField(required=True,)
+    last_name = serializers.CharField(required=True,)
     gender = serializers.ChoiceField(choices=User.GENDER)
     phone_number = serializers.CharField(required=True,)
     dob = serializers.DateField()
@@ -59,11 +67,13 @@ class PatientRegistrationSerializer(RegisterSerializer):
     def get_cleaned_data(self):
         data = super(PatientRegistrationSerializer, self).get_cleaned_data()
         extra_data = {
-            'phone_number': self.validated_data('phone_number', ''),
-            'gender': self.validated_data('gender', ''),
-            'dob': self.validated_data('dob', ''),
-            'height': self.validated_data('height', ''),
-            'weight': self.validated_data('weight', '')
+            'phone_number': self.validated_data.get('phone_number', ''),
+            'first_name': self.validated_data.get('first_name', ''),
+            'last_name': self.validated_data.get('last_name', ''),
+            'gender': self.validated_data.get('gender', ''),
+            'dob': self.validated_data.get('dob', ''),
+            'height': self.validated_data.get('height', ''),
+            'weight': self.validated_data.get('weight', '')
         }
         data.update(extra_data)
         return data
@@ -71,6 +81,8 @@ class PatientRegistrationSerializer(RegisterSerializer):
     def save(self, request):
         user = super(PatientRegistrationSerializer, self).save(request)
         user.is_patient = True
+        user.first_name = self.cleaned_data.get('first_name')
+        user.last_name = self.cleaned_data.get('last_name')
         user.phone_number = self.cleaned_data.get('phone_number')
         user.gender = self.cleaned_data.get('gender')
         user.save()
