@@ -61,8 +61,8 @@ class PatientRegistrationSerializer(RegisterSerializer):
     gender = serializers.ChoiceField(choices=User.GENDER)
     phone_number = serializers.CharField(required=True,)
     dob = serializers.DateField()
-    height = serializers.FloatField()
-    weight = serializers.FloatField()
+    height = serializers.DecimalField(max_digits=5, decimal_places=2)
+    weight = serializers.DecimalField(max_digits=5, decimal_places=2)
 
     def get_cleaned_data(self):
         data = super(PatientRegistrationSerializer, self).get_cleaned_data()

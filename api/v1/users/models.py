@@ -41,8 +41,8 @@ class Doctor(models.Model):
 class Patient(models.Model):
     patient = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     dob = models.DateField()
-    height = models.FloatField()
-    weight = models.FloatField()
+    height = models.DecimalField(max_digits=5, decimal_places=2)
+    weight = models.DecimalField(max_digits=5, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
 
