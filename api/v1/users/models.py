@@ -21,6 +21,7 @@ class Doctor(models.Model):
 
     doctor = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     bio = models.TextField(blank=False)
+    specialty = models.CharField(max_length=255, blank=False)
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, blank=False, default=ONLINE)
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
