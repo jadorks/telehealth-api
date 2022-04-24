@@ -1,7 +1,9 @@
 from django.http import response
 from rest_framework.response import Response
-from .filters import SlotFilter
-from django.shortcuts import render
+
+from api.v1.users.models import Patient
+from .filters import BookingFilter, SlotFilter
+from django.shortcuts import get_object_or_404, render
 from .models import AppointmentSlot, Booking
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from .serializers import BookingSerializer, SlotSerializer, BookingListSerializer
@@ -11,6 +13,7 @@ from .serializers import BookingSerializer, SlotSerializer, BookingListSerialize
 class BookingList(ListCreateAPIView):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
+    filter_class = BookingFilter
 
     def list(self, request):
         queryset = self.get_queryset()
@@ -18,7 +21,8 @@ class BookingList(ListCreateAPIView):
         return Response(serializer.data)
 
     def perform_create(self, serializer):
-        serializer.save(patient=self.request.user)
+        patient = get_object_or_404(Patient, patient=self.request.user.id)
+        serializer.save(patient=patient)
 
 class BookingDetail(RetrieveUpdateDestroyAPIView):
     queryset = Booking.objects.all()
@@ -30,7 +34,8 @@ class BookingDetail(RetrieveUpdateDestroyAPIView):
         return Response(serializer.data)
 
     def perform_update(self, serializer):
-        serializer.save(patient=self.request.user)
+        patient = get_object_or_404(Patient, patient=self.request.user.id)
+        serializer.save(patient=patient)
 
 class SlotList(ListCreateAPIView):
     queryset = AppointmentSlot.objects.all()

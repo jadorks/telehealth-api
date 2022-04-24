@@ -1,5 +1,5 @@
 from django.urls import path, re_path
-from .views import DoctorListView, DoctorRegisterView, DoctorRetrieveView, PatientListView, PatientRegisterView, PatientRetrieveView
+from .views import CurrentPatientView, DoctorListView, DoctorRegisterView, DoctorRetrieveView, PatientListView, PatientRegisterView, PatientRetrieveView
 from dj_rest_auth.registration.views import VerifyEmailView, ConfirmEmailView
 from dj_rest_auth.views import LoginView, LogoutView
 
@@ -28,5 +28,6 @@ urlpatterns = [
     path('doctors', DoctorListView.as_view(), name='list-doctor'),
     path('doctors/<int:pk>', DoctorRetrieveView.as_view(), name='retrieve-doctor'),
     path('patients', PatientListView.as_view(), name='list-patient'),
-    path('patients/<int:pk>', PatientRetrieveView.as_view(), name='retrieve-patient')
+    path('patients/<int:pk>', PatientRetrieveView.as_view(), name='retrieve-patient'),
+    path('current_patient', CurrentPatientView.as_view(), name='current-patient')
 ]

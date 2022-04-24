@@ -50,7 +50,7 @@ class Booking(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.SET_NULL, null=True)
     doctor = models.ForeignKey(Doctor, on_delete=models.SET_NULL, null=True)
     booking_slot = models.OneToOneField(AppointmentSlot, on_delete=models.SET_NULL, null=True)
-    booking_reference = models.UUIDField(default=shortuuid.uuid, editable=False)
+    booking_reference = models.CharField(max_length=255, default=shortuuid.uuid, editable=False)
     booking_status = models.CharField(max_length=2, choices=STATUS_CHOICES, default=PENDING)
     payment_status = models.CharField(max_length=2, choices=PAYMENT_CHOICES, default=UNPAID)
     description = models.TextField(blank=True)
