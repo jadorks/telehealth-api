@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save,post_delete
 from api.v1.bookings.models import Booking
 
 def update_booking_slot(sender, instance, **kwargs):
@@ -9,3 +9,11 @@ def update_booking_slot(sender, instance, **kwargs):
     # bad place to say, this but do a cron job that would create the rooms on the day of appointment and send link to both doctor and patient
 
 post_save.connect(update_booking_slot, sender=Booking, dispatch_uid="created_booking")
+
+def reset_booking_slot(sender, instance, **kwargs):
+    booking_slot = instance.booking_slot
+    booking_slot.status = 'OP'
+    booking_slot.save()
+    # todo: notify canceled stuff
+
+post_delete.connect(reset_booking_slot, sender=Booking, dispatch_uid='deleted_booking')

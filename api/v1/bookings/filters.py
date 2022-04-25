@@ -14,7 +14,7 @@ class SlotFilter(filters.FilterSet):
         fields = ['start_gte', 'start_lte', 'doctor', 'status']
 
 class BookingFilter(filters.FilterSet):
-    patient = django_filters.DateTimeFilter(field_name="patient__id", lookup_expr='iexact')
+    patient = django_filters.NumberFilter(field_name="patient__id", lookup_expr='iexact')
 
     class Meta:
         model = Booking
