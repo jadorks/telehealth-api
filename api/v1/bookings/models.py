@@ -53,6 +53,8 @@ class Booking(models.Model):
     booking_reference = models.CharField(max_length=255, default=shortuuid.uuid, editable=False)
     booking_status = models.CharField(max_length=2, choices=STATUS_CHOICES, default=PENDING)
     payment_status = models.CharField(max_length=2, choices=PAYMENT_CHOICES, default=UNPAID)
+    room_name = models.CharField(max_length=255, blank=True)
+    room_sid = models.CharField(max_length=255, blank=True)
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now=True)
     last_modified = models.DateTimeField(auto_now_add=True)

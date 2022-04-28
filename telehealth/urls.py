@@ -23,6 +23,9 @@ urlpatterns = [
     #api-routes
     path('api/', include('api.urls')),
 
+    #video-chat-app
+    path('video/', include(('video_chat.urls'), namespace='video_chat'))
+
     # rest-auth
     # path('dj-rest-auth/', include('dj_rest_auth.urls')),
     # path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls'))

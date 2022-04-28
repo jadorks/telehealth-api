@@ -1,0 +1,53 @@
+{% load static %}
+
+<!-- get second div in participant div and use that as input -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room</title>
+    <script src="https://sdk.twilio.com/js/video/releases/2.15.2/twilio-video.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <style>
+           body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: blanchedalmond;
+    }
+        canvas {
+            position: absolute;
+            top: 425px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="video-container" class="magic-container"></div>
+        <a href="{% url 'video_chat:end-room' context.room_sid %}">Close Room</a>
+        {% if context.is_doctor == 'true' %}
+            <button onclick="doMagic()" class="btn btn-primary">Perform Face Analysis</button>
+            <h3>Doctor View</h3>
+        {% else %}
+            <h3>Patient View</h3>
+        {% endif %}
+    </div>
+
+    <script type="text/javascript">
+        var context = {{ context|safe }}
+        const MODEL_URL = "{% static 'models/' %}"
+    </script>
+    <script src="{% static 'js/face-api.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/emotion.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+</body>
+</html>
