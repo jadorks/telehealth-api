@@ -74,6 +74,6 @@ def get_access_token(room_name):
     return access_token
 
 def end_room(request, room_sid):
-    room = twilio_client.video.rooms(room_sid)
+    room = twilio_client.video.rooms(room_sid).update(status='completed')
     return JsonResponse({"room_status": "ended"})
 

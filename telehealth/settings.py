@@ -58,6 +58,8 @@ INSTALLED_APPS = [
 
     'django_crontab',
     'corsheaders',
+
+    'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -203,3 +205,5 @@ SIMPLE_JWT = {
 CRONJOBS = [
     ('* * * * *', 'video_chat.video_gen.create_meeting_rooms', '>> ' + os.path.join(BASE_DIR, 'video_chat/generator_logs.log'))
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

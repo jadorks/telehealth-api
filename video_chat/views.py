@@ -1,28 +1,18 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http import Http404, JsonResponse
 from django.views import View
-from rest_framework.response import Response
 
 from api.v1.bookings.models import Booking
 from api.v1.users.models import Doctor, Patient, User
-from video_chat.forms import VideoForm
+from video_chat.forms import RecordForm, VideoForm
 from .utils import get_access_token
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
-# after sending a post request to the join route and getting the token, what next
-# add the token to the user's session rather
-# get the name the person wants to use for the video call
-# store room_name, room_id, person_information in session variable
-# redirect to the room view page
-# on room view get the room data and ther person's information from session variable
-# pass the necessary content to the view and its context
-
-# js vars can be retrieved from context
-
+@method_decorator(csrf_exempt, name='dispatch')
 class JoinRoom(View):
 
     def get(self, request, ref):
+        print(ref)
         booking = get_object_or_404(Booking, booking_reference=ref)
         room_name = booking.room_name
         room_sid = booking.room_sid
@@ -62,28 +52,51 @@ class JoinRoom(View):
             else:
                 return redirect('video_chat:join-room', ref)
 
+@method_decorator(csrf_exempt, name='dispatch')
+class RoomView(View):
+    def get(self, request, room_name):
+        room_data = request.session['room_data']
+        participant_data = request.session['participant_data']
+        patient_id = request.session['patient_id']
+        doctor_id = request.session['doctor_id']
+        booking_id = request.session['booking_id']
+        is_doctor = request.session['is_doctor']
 
-def room_view(request, room_name):
-    room_data = request.session['room_data']
-    participant_data = request.session['participant_data']
-    patient_id = request.session['patient_id']
-    doctor_id = request.session['doctor_id']
-    booking_id = request.session['booking_id']
-    is_doctor = request.session['is_doctor']
-    doctor = Doctor.objects.get(id=doctor_id)
-    patient = Patient.objects.get(id=patient_id)
-    booking = Booking.objects.get(id=booking_id)
-    context = {
-        "context": {
-            'room_name': room_name,
-            'room_sid': room_data['room_sid'],
-            'participant_token': participant_data['token'],
-            'doctor': doctor_id,
-            'patient': booking_id,
-            'booking': booking_id,
-            'is_doctor': 'true' if is_doctor else 'false'
+
+        record_form = RecordForm()
+
+        context = {
+            "context": {
+                'room_name': room_name,
+                'room_sid': room_data['room_sid'],
+                'participant_token': participant_data['token'],
+                'doctor': doctor_id,
+                'patient': patient_id,
+                'booking': booking_id,
+                'is_doctor': 'true' if is_doctor else 'false',
+            },
+            'record_form': record_form
         }
-    }
 
-    return render(request, 'video_chat/room.html', context)
+        return render(request, 'video_chat/room.html', context)
+
+    def post(self, request, room_name):
+        medical_form = RecordForm(request.POST)
+        booking_id = request.session['booking_id']
+        patient_id = request.session['patient_id']
+        doctor_id = request.session['doctor_id']
+
+        booking = Booking.objects.get(id=booking_id)
+        doctor = Doctor.objects.get(id=doctor_id)
+        patient = Patient.objects.get(id=patient_id)
+
+
+        if medical_form.is_valid():
+            medical_record = medical_form.save(commit=False)
+            medical_record.booking_id = booking
+            medical_record.doctor = doctor
+            medical_record.patient = patient
+            medical_record.save()
+
+            return redirect('video_chat:room-view', room_name)
 
