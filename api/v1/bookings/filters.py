@@ -15,6 +15,7 @@ class SlotFilter(filters.FilterSet):
 
 class BookingFilter(filters.FilterSet):
     patient = django_filters.NumberFilter(field_name="patient__id", lookup_expr='iexact')
+    status = django_filters.CharFilter(field_name="booking_status", lookup_expr='iexact')
 
     class Meta:
         model = Booking

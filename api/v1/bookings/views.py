@@ -16,7 +16,7 @@ class BookingList(ListCreateAPIView):
     filter_class = BookingFilter
 
     def list(self, request):
-        queryset = self.get_queryset()
+        queryset = Booking.objects.filter(patient__id=self.request.query_params.get('patient')).filter(booking_status=self.request.query_params.get('status')) if self.request.query_params.get('patient') and self.request.query_params.get('status') else Booking.objects.all()
         serializer = BookingListSerializer(queryset, many=True, context={"request": request})
         return Response(serializer.data)
 

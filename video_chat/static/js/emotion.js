@@ -15,6 +15,7 @@ async function doMagic() {
     for (let index = 0; index < children.length; index++) {
         const element = children[index];
         if(element.tagName == 'VIDEO'){
+          // add class to the element, make the class position relative and make the canvas absolute, probably make the canvas a child of the magic container?
             input = element;
         }
     }

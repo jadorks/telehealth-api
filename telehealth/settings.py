@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 import os
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -207,3 +211,8 @@ CRONJOBS = [
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+TWILIO_ACCOUNT_SID = env("TWILIO_ACCOUNT_SID")
+TWILIO_API_KEY_SID = env("TWILIO_API_KEY_SID")
+TWILIO_API_KEY_SECRET = env("TWILIO_API_KEY_SECRET")
+TWILIO_AUTH_TOKEN = env("TWILIO_AUTH_TOKEN")
