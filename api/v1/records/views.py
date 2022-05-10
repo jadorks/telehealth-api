@@ -15,7 +15,7 @@ class RecordItemList(ListCreateAPIView):
     filter_class = RecordFilter
 
     def list(self, request):
-        queryset = self.get_queryset()
+        queryset = RecordItem.objects.filter(patient__id=self.request.query_params.get('patient')) if self.request.query_params.get('patient') else RecordItem.objects.all()
         serializer = RecordItemListSerializer(queryset, many=True, context={"request":request})
         return Response(serializer.data)
 
