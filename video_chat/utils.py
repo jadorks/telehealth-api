@@ -1,6 +1,6 @@
 import os
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 
 import twilio.jwt.access_token
 import twilio.jwt.access_token.grants
@@ -74,6 +74,6 @@ def get_access_token(room_name):
     return access_token
 
 def end_room(request, room_sid):
-    room = twilio_client.video.rooms(room_sid).update(status='completed')
-    return JsonResponse({"room_status": "ended"})
+    room = twilio_client.video.rooms(room_sid).fetch()
+    return render(request, 'video_chat/complete.html')
 

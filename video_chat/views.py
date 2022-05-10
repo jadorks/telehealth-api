@@ -89,7 +89,8 @@ class RoomView(View):
         booking = Booking.objects.get(id=booking_id)
         doctor = Doctor.objects.get(id=doctor_id)
         patient = Patient.objects.get(id=patient_id)
-
+        room_data = request.session['room_data']
+        room_sid = room_data['room_sid']
 
         if medical_form.is_valid():
             medical_record = medical_form.save(commit=False)
@@ -98,5 +99,5 @@ class RoomView(View):
             medical_record.patient = patient
             medical_record.save()
 
-            return redirect('video_chat:room-view', room_name)
+            return redirect('video_chat:end-room', room_sid)
 

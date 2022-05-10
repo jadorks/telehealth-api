@@ -23,7 +23,7 @@ async function doMagic() {
     // const input = patient_view.lastChild;
     input.setAttribute("id", "patient_video");
     const video = document.getElementById("patient_video");
-    detectFaces(video);
+    await detectFaces(video, patient_view);
   } else {
     console.log("not a doctor");
   }
@@ -49,9 +49,10 @@ function waitForElm(selector) {
   });
 }
 
-function detectFaces(input) {
+async function detectFaces(input, patient_view) {
   const canvas = faceapi.createCanvasFromMedia(input);
-  document.body.append(canvas);
+  canvas.setAttribute("id", "patientCanvas")
+  patient_view.append(canvas);
   const displaySize = { width: input.videoWidth, height: input.videoHeight };
   faceapi.matchDimensions(canvas, displaySize);
   setInterval(async () => {
