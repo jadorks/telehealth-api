@@ -13,10 +13,13 @@ def update_booking_slot(sender, instance, **kwargs):
     booking_doctor = instance.doctor
     booking_patient = instance.patient
 
+    print(booking_doctor)
+    print(booking_patient)
+
     patient_msg = f"Your consultation for {booking_date} at {booking_time} with {booking_doctor.doctor.first_name} {booking_doctor.doctor.last_name} has been created." 
     doctor_msg = f"You have a new consultation for {booking_date} at {booking_time} with {booking_patient.patient.first_name} {booking_patient.patient.last_name}"
-    send_message(patient_msg, "+233247754809")
-    send_message(doctor_msg, "+233247754809")
+    send_message(patient_msg, booking_patient.patient.phone_number)
+    send_message(doctor_msg, booking_doctor.doctor.phone_number )
 
 
 post_save.connect(update_booking_slot, sender=Booking, dispatch_uid="created_booking")
@@ -33,7 +36,7 @@ def reset_booking_slot(sender, instance, **kwargs):
 
     patient_msg = f"Your consultation for {booking_date} at {booking_time} with {booking_doctor.doctor.first_name} {booking_doctor.doctor.last_name} has been canceled."
     doctor_msg = f"Your consultation for {booking_date} at {booking_time} with {booking_patient.patient.first_name} {booking_patient.patient.last_name} has been canceled"
-    send_message(patient_msg, "+233247754809")
-    send_message(doctor_msg, "+233247754809")
+    send_message(patient_msg, booking_patient.patient.phone_number)
+    send_message(doctor_msg, booking_doctor.doctor.phone_number )
 
 post_delete.connect(reset_booking_slot, sender=Booking, dispatch_uid='deleted_booking')

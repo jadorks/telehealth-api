@@ -20,10 +20,6 @@ class BookingList(ListCreateAPIView):
         serializer = BookingListSerializer(queryset, many=True, context={"request": request})
         return Response(serializer.data)
 
-    def perform_create(self, serializer):
-        patient = get_object_or_404(Patient, patient=self.request.user.id)
-        serializer.save(patient=patient)
-
 class BookingDetail(RetrieveUpdateDestroyAPIView):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
